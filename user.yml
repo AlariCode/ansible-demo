@@ -1,13 +1,12 @@
 ---
 - name: user
   hosts: demo
-  vars_prompt:
-    - name: user
-      prompt: "Введите пользователя"
-      private: no
   tasks:
     - name: Create user
+      vars:
+        user: alaricode
       user:
         name: "{{ user }}"
         state: present
       become: true
+      debugger: always
