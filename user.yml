@@ -4,25 +4,21 @@
   tasks:
     - name: Preconfig block
       block:
-        - name: Create user
-          vars:
-            user: alaricode
-          user:
-            name: "{{ user }}"
-            state: present
-          register: error
-        - name: Install curl
-          apt:
-            name: curl
-            update-cache: yes
-          register: error
+        - name: Sleep
+          command: /bin/sleep 15
+          async: 1000
+          poll: 0
+          register: sleep
+        - debug:
+            var: sleep
+        - name: Echo
+          command: echo "DONE"
       become: true
-      when: ansible_facts['distribution'] == 'CentOS'
-      rescue:
-        - name: Some error print
-          debug:
-            var: error
-      always:
-        - name: Reboot
-          debug:
-            msg: "Reooooooting"
+    - name: Check sleep status
+      async_status:
+        jid: "{{ sleep.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 100
+      delay: 1
+      become: true
