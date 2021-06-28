@@ -1,0 +1,6 @@
+[cluster]
+sarver1 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2223
+sarver2 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2224
+sarver3 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2225
+sarver4 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2226
+sarver5 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=2227

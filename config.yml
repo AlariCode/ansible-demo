@@ -1,6 +1,6 @@
 ---
 - name: Preconfig
-  hosts: demo
+  hosts: cluster
   tasks:
     - name: Утановка Docker
       block:
@@ -24,6 +24,7 @@
           apt_key:
             url: https://download.docker.com/linux/ubuntu/gpg
             state: present
+            keyring: /usr/share/keyrings/docker-archive-keyring.gpg
 
         - name: Установка стабильного репозитория
           apt_repository:
