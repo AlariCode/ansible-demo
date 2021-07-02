@@ -1,0 +1,73 @@
+---
+- name: Утановка Docker
+  block:
+    - name: Добавляем universe
+      apt_repository:
+        repo: "deb http://us.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} universe"
+        state: present
+
+    - name: Установка дополнительных пакетов
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        update-cache: true
+        cache_valid_time: 86400
+
+    - name: Добавление ключа Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+        keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+
+    - name: Установка стабильного репозитория
+      apt_repository:
+        repo: >
+          deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+          https://download.docker.com/linux/ubuntu
+          {{ ansible_distribution_release }} stable
+        state: present
+        update-cache: true
+        filename: docker
+
+    - name: Установка Docker-ce
+      apt:
+        name: docker-ce
+        update-cache: true
+
+    - name: Проверка что Docker установлен и перезагружен
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+  become: true
+
+- name: Утановка Docker-compose
+  block:
+    - name: Получение последней версии Docker-compose
+      uri:
+        url: https://api.github.com/repos/docker/compose/releases/latest
+        body_format: json
+      register: page
+
+    - name: Установка Docker-compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/{{ page.json.tag_name }}/docker-compose-Linux-x86_64"
+        dest: /usr/local/bin/docker-compose
+        mode: 0755
+  become: true
+
+- name: Завершение установки
+  block:
+    - name: Добавление пользователя в группу Docker
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+
+    - name: Перезагрузка
+      reboot:
+  become: true
