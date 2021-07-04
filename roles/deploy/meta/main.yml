@@ -1,0 +1,10 @@
+galaxy_info:
+  role_name: deploy
+  description: Выкладка микросервисов на docker кластер
+  author: Anton Larichev
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
