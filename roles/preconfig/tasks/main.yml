@@ -14,6 +14,7 @@
           - curl
           - gnupg
           - lsb-release
+          - python3-pip
         update-cache: true
         cache_valid_time: 86400
 
@@ -45,7 +46,7 @@
         enabled: true
   become: true
 
-- name: Утановка Docker-compose
+- name: Установка Docker-compose
   block:
     - name: Получение последней версии Docker-compose
       uri:
@@ -59,6 +60,12 @@
         dest: /usr/local/bin/docker-compose
         mode: 0755
   become: true
+
+- name: Настройка дополнительных пакетов python
+  block:
+    - name: Установка pip пакетов
+      pip:
+        name: docker
 
 - name: Завершение установки
   block:
