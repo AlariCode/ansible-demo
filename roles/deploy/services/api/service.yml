@@ -1,23 +1,21 @@
 ---
-- name: "[{{ name }}] Создаём секрет"
-  community.docker.docker_secret:
-    name: "{{ name }}.env"
-    data: "{{ lookup('file', '.env') | b64encode }}"
-    labels:
-      secret: "{{ lookup('file', '.env') | hash('sha1') }}"
-    data_is_b64: true
-    state: present
+- name: "[{{ name }}] Конфигурация секрета"
+  include: "../secret.yml"
 
-- name: "[{{ name }}] Выкладываем сервис"
-  community.docker.docker_swarm_service:
-    name: "{{ name }}"
-    image: localhost:5000/api:latest
-    state: present
-    publish:
-      - mode: ingress
-        protocol: tcp
-        published_port: 3002
-        target_port: 3000
-    secrets:
-      - secret_name: "{{ name }}.env"
-        filename: "/opt/app/.env"
+- name: "[{{ name }}] Выкладка сервиса"
+  block:
+    - name: "[{{ name }}] Выкладываем сервис"
+      community.docker.docker_swarm_service:
+        name: "{{ name }}"
+        image: "localhost:5000/{{ name }}:latest"
+        state: present
+        networks:
+          - name: "{{ networkName }}"
+        publish:
+          - mode: ingress
+            protocol: tcp
+            published_port: 3002
+            target_port: 3000
+        secrets:
+          - secret_name: "{{ name }}.env"
+            filename: "/opt/app/.env"
