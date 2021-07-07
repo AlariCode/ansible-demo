@@ -19,3 +19,4 @@
         secrets:
           - secret_name: "{{ name }}.env"
             filename: "/opt/app/.env"
+  tags: "{{ name }}"
