@@ -1,0 +1,24 @@
+---
+- name: Инициализация swarm
+  community.docker.docker_swarm:
+    state: present
+    advertise_addr: "{{ advertise_addr }}"
+  register: token
+
+- name: Наличие директории
+  local_action:
+    module: file
+    path: ./tokens
+    state: directory
+
+- name: Сохранение токена manager
+  local_action:
+    module: copy
+    dest: ./tokens/token-manager
+    content: "{{ token.swarm_facts.JoinTokens.Manager }}"
+
+- name: Сохранение токена worker
+  local_action:
+    module: copy
+    dest: ./tokens/token-worker
+    content: "{{ token.swarm_facts.JoinTokens.Worker }}"

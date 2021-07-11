@@ -1,0 +1,10 @@
+galaxy_info:
+  role_name: swarm_join
+  description: Присоединение к swarm
+  author: Anton Larichev
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
