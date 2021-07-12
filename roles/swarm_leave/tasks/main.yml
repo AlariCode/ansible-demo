@@ -1,0 +1,19 @@
+---
+- name: Перевод в статус drain
+  community.docker.docker_node:
+    hostname: "{{ node_name }}"
+    availability: drain
+
+- name: Ожидание остановки
+  community.docker.docker_host_info:
+    containers: true
+  register: result
+  retries: 30
+  delay: 2
+  until: result.host_info.ContainersRunning == 0
+  delegate_to: "{{ node_name }}"
+
+- name: Удаление ноды
+  community.docker.docker_swarm:
+    state: remove
+    node_id: "{{ node_name }}"
