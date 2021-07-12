@@ -9,7 +9,7 @@
   file:
     path: ./tokens
     state: directory
-    mode: "0644"
+    mode: "0777"
   delegate_to: localhost
 
 - name: Сохранение токена manager

@@ -28,3 +28,11 @@
     - role: swarm_join
       type: worker
       tags: swarm_join
+  post_tasks:
+    - name: Очистка папки token
+      file:
+        path: ./tokens
+        state: absent
+      ignore_errors: true
+      delegate_to: localhost
+      tags: swarm_join
