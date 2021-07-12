@@ -5,23 +5,8 @@
     advertise_addr: "{{ advertise_addr }}"
   register: token
 
-- name: Наличие директории
-  file:
-    path: ./tokens
-    state: directory
-    mode: "0777"
-  delegate_to: localhost
-
-- name: Сохранение токена manager
-  copy:
-    dest: ./tokens/token-manager
-    content: "{{ token.swarm_facts.JoinTokens.Manager }}"
-    mode: "0644"
-  delegate_to: localhost
-
-- name: Сохранение токена worker
-  copy:
-    dest: ./tokens/token-worker
-    content: "{{ token.swarm_facts.JoinTokens.Worker }}"
-    mode: "0644"
-  delegate_to: localhost
+- name: Сохранение токенов
+  set_fact:
+    token_manager: "{{ token.swarm_facts.JoinTokens.Manager }}"
+    token_worker: "{{ token.swarm_facts.JoinTokens.Worker }}"
+    cacheable: true
