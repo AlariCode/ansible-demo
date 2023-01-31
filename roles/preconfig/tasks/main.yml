@@ -79,6 +79,7 @@
   - name: Установка pip пакетов
     pip:
       name: docker
+  become: true
 
 - name: Reboot
   block:
