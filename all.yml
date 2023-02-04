@@ -1,9 +1,11 @@
 ---
-- name: Deploy server
+- name: Deploy / build server
   hosts: deploy
   roles:
     - role: preconfig
       tags: preconfig
+    - role: build
+      tags: build
     - role: deploy
       tags: deploy
 #    - swarm_init

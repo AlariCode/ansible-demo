@@ -1,7 +1,4 @@
 ---
-- name: "[{{ name }}] Конфигурация секрета"
-  include: "../secret.yml"
-
 - name: "[{{ name }}] Выкладка сервиса"
   block:   
 
@@ -15,10 +12,7 @@
       publish:
         - mode: ingress
           protocol: tcp
-          published_port: 3002
-          target_port: 3000
-      secrets:
-        - secret_name: "{{ name }}.env"
-          filename: "/opt/app/.env"
+          published_port: 3001
+          target_port: 80
 
   tags: "{{ name }}"
