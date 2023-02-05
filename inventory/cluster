@@ -1,8 +1,8 @@
 [deploy]
-server1 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=3001
+server1 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=7001
 [managers]
-server2 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=3002
-server3 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=3003
+server2 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=7002
+server3 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=7003
 [workers]
-server4 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=3004
-server5 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=3005
+server4 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=7004
+server5 ansible_host=127.0.0.1 ansible_user=vagrant ansible_port=7005

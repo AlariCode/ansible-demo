@@ -1,0 +1,26 @@
+---
+- name: "[{{ name }}] Конфигурация конфига"
+  include: "../config.yml"
+  loop:
+    - nginx.conf
+  loop_control:
+    loop_var: config_item
+
+- name: "[{{ name }}] Выкладка сервиса"
+  block:
+    - name: "[{{ name }}] Выкладываем сервис"
+      community.docker.docker_swarm_service:
+        name: "{{ name }}"
+        image: "nginx:{{ version }}"
+        state: present
+        networks:
+          - name: "{{ network_name }}"
+        publish:
+          - mode: ingress
+            protocol: tcp
+            published_port: 80
+            target_port: 80
+        configs:
+          - config_name: nginx.conf
+            filename: "/etc/nginx/nginx.conf"
+  tags: "{{ name }}"
